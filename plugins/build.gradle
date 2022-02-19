@@ -1,0 +1,40 @@
+group 'org.bougainvilleas.java'
+version '0.0.1'
+
+dependencies {
+    implementation project(':pluggable')
+}
+
+def encryptClass(File file, byte key) {
+    if (file.isDirectory()) {
+        File[] files = file.listFiles()
+        for (File temp : files) {
+            encryptClass(temp, key)
+        }
+    } else if (file.isFile() && file.absolutePath.endsWith(".class")) {
+        //加密 class 文件
+        File output = new File(file.absolutePath.substring(0, file.absolutePath.length() - 6))
+        InputStream inputStream = new FileInputStream(file)
+        OutputStream outputStream = new FileOutputStream(output)
+        byte[] buffer = new byte[1024]
+        int read
+        while ((read = inputStream.read(buffer)) != -1)
+            outputStream.write(encryption(buffer, key), 0, read)
+        outputStream.close()
+        inputStream.close()
+        file.delete()
+    }
+}
+
+static byte[] encryption(byte[] source, byte key) {
+    byte[] result = new byte[source.length];
+    for (int i = 0; i < source.length; i++)
+        result[i] = (byte) (source[i] ^ key)
+    return result
+}
+
+classes.doLast {
+    String classPath = "$buildDir" + "/classes"
+    File file = new File(classPath.replace("\\", "/"))
+    encryptClass(file, (byte) 1)
+}

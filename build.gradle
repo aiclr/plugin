@@ -1,0 +1,49 @@
+allprojects {
+    apply plugin: 'java'
+    java {
+        toolchain {
+            languageVersion = JavaLanguageVersion.of(8)
+        }
+    }
+
+    [compileJava, compileTestJava, javadoc]*.options*.encoding = 'UTF-8'
+
+    tasks.withType(JavaCompile) {
+        options.compilerArgs << '-Xlint:unchecked' << '-Xlint:deprecation'
+    }
+}
+
+group = 'org.bougainvilleas.java'
+version = '0.0.1'
+
+jar.enabled(false)
+
+subprojects {
+    apply plugin: 'java-library'
+    apply plugin: 'maven-publish'
+
+    repositories {
+        mavenLocal()
+        maven {
+            url 'https://maven.aliyun.com/repository/public/'
+        }
+        mavenCentral()
+    }
+
+    dependencies {
+        testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.2'
+        testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.2'
+    }
+
+    test {
+        useJUnitPlatform()
+    }
+//    发布 jar 到 maven 本地仓库
+    publishing {
+        publications {
+            maven(MavenPublication) {
+                from components.java
+            }
+        }
+    }
+}

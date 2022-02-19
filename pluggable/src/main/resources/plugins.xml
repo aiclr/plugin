@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugins>
+    <plugin>
+        <name>插件A</name>
+        <className>org.bougainvilleas.java.plugins.APlugin</className>
+        <jar>/home/caddy/code/bougainvilleas/plugin/plugins/build/libs/plugins-0.0.1.jar</jar>
+    </plugin>
+    <plugin>
+        <name>插件B</name>
+        <className>org.bougainvilleas.java.plugins.BPlugin</className>
+        <jar>/home/caddy/code/bougainvilleas/plugin/plugins/build/libs/plugins-0.0.1.jar</jar>
+    </plugin>
+</plugins>
