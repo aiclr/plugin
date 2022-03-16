@@ -1,9 +1,15 @@
 package org.bougainvilleas.java.pluggable;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
+
 /**
  * @author renqiankun
  * 2022-02-18 09:36:05 星期五
  */
+@XmlRootElement(name = "plugin")
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Plugin
 {
     private String name;
