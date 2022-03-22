@@ -11,30 +11,31 @@ import java.util.jar.JarFile;
 
 /**
  * 自定义类加载器 解密插件字节码
+ * 
  * @author renqiankun
- * 2022-02-18 13:55:01 星期五
+ *         2022-02-18 13:55:01 星期五
  */
-public class MyClassLoader extends ClassLoader
+public class MyClassLoader extends ClassLoader 
 {
     Set<Plugin> plugins;
 
-    public MyClassLoader(Set<Plugin> plugins)
+    public MyClassLoader(Set<Plugin> plugins) 
     {
         this.plugins = plugins;
     }
 
     @Override
-    protected Class<?> findClass(String name) throws ClassNotFoundException
+    protected Class<?> findClass(String name) throws ClassNotFoundException 
     {
-        try
+        try 
         {
             byte[] bytes = getClass(name);
             if (bytes == null)
                 throw new FileNotFoundException();
             else
                 return defineClass(name, bytes, 0, bytes.length);
-        }
-        catch (FileNotFoundException e)
+        } 
+        catch (FileNotFoundException e) 
         {
             e.printStackTrace();
         }
@@ -50,36 +51,41 @@ public class MyClassLoader extends ClassLoader
      * @throws FileNotFoundException
      */
     private byte[] getClass(String name) throws FileNotFoundException
-    {
-        for(Plugin plugin : plugins)
+     {
+        for (Plugin plugin : plugins) 
         {
             if (name.equalsIgnoreCase(plugin.getClassName()))
             {
-                try
+                final String jarPath = plugin.getJar();
+                try (JarFile jarFile = new JarFile(jarPath)) 
                 {
-                    final String jarPath = plugin.getJar();
                     final String classPath = name.replace(".", "/");
                     final byte[] buffer = new byte[1024];
-                    JarFile jarFile = new JarFile(jarPath);
                     final Enumeration<JarEntry> entries = jarFile.entries();
-                    while (entries.hasMoreElements())
+                    while (entries.hasMoreElements()) 
                     {
                         final JarEntry jarEntry = entries.nextElement();
-                        if (jarEntry.getName().equalsIgnoreCase(classPath))
+                        if (jarEntry.getName().equalsIgnoreCase(classPath)) 
                         {
-                            final InputStream inputStream = jarFile.getInputStream(jarEntry);
-                            final ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-                            int read;
-                            while ((read = inputStream.read(buffer)) != -1)
+                            try (InputStream inputStream = jarFile.getInputStream(jarEntry);
+                                    ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();) 
                             {
-                                byte[] decrypt = encrypt(buffer, (byte) 1);
-                                byteArrayOutputStream.write(decrypt, 0, read);
+                                int read;
+                                while ((read = inputStream.read(buffer)) != -1) 
+                                {
+                                    byte[] decrypt = encrypt(buffer, (byte) 1);
+                                    byteArrayOutputStream.write(decrypt, 0, read);
+                                }
+                                return byteArrayOutputStream.toByteArray();
+                            } 
+                            catch (Exception e) 
+                            {
+                                e.printStackTrace();
                             }
-                            return byteArrayOutputStream.toByteArray();
                         }
                     }
                 }
-                catch (IOException e)
+                catch (IOException e) 
                 {
                     e.printStackTrace();
                 }
@@ -88,13 +94,12 @@ public class MyClassLoader extends ClassLoader
         return null;
     }
 
-    public static byte[] encrypt(byte[] source, byte key)
+    public static byte[] encrypt(byte[] source, byte key) 
     {
         byte[] result = new byte[source.length];
-        for(int i = 0; i < source.length; i++)
+        for (int i = 0; i < source.length; i++)
             result[i] = (byte) (source[i] ^ key);
         return result;
     }
-
 
 }
