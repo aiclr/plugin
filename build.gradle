@@ -13,14 +13,13 @@ allprojects {
     }
 }
 
-group = 'org.bougainvilleas.java'
-version = '0.0.1'
-
 jar.enabled(false)
 
 subprojects {
     apply plugin: 'java-library'
-    apply plugin: 'maven-publish'
+
+    group = 'org.bougainvilleas.java'
+    version = '0.0.1'
 
     repositories {
         mavenLocal()
@@ -37,13 +36,5 @@ subprojects {
 
     test {
         useJUnitPlatform()
-    }
-//    发布 jar 到 maven 本地仓库
-    publishing {
-        publications {
-            maven(MavenPublication) {
-                from components.java
-            }
-        }
     }
 }

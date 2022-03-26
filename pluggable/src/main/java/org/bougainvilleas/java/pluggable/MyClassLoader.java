@@ -18,7 +18,6 @@ import java.util.jar.JarFile;
 public class MyClassLoader extends ClassLoader 
 {
     Set<Plugin> plugins;
-
     public MyClassLoader(Set<Plugin> plugins) 
     {
         this.plugins = plugins;
@@ -73,7 +72,8 @@ public class MyClassLoader extends ClassLoader
                                 int read;
                                 while ((read = inputStream.read(buffer)) != -1) 
                                 {
-                                    byte[] decrypt = encrypt(buffer, (byte) 1);
+                                    byte key=Byte.parseByte(Pluggable.key);
+                                    byte[] decrypt = encrypt(buffer,key);
                                     byteArrayOutputStream.write(decrypt, 0, read);
                                 }
                                 return byteArrayOutputStream.toByteArray();
@@ -101,5 +101,4 @@ public class MyClassLoader extends ClassLoader
             result[i] = (byte) (source[i] ^ key);
         return result;
     }
-
 }

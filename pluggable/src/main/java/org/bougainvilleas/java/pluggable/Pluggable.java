@@ -9,10 +9,14 @@ import java.util.Set;
  */
 public class Pluggable
 {
+    public static String key;
+
     public static void main(String[] args)
     {
         try
         {
+            init(args);
+
             final Set<Plugin> plugins = XMLParser.getPlugins();
             final PluginManager pluginManager = new PluginManager(plugins);
             for(Plugin plugin:plugins)
@@ -28,4 +32,11 @@ public class Pluggable
             e.printStackTrace();
         }
     }
+
+    private static void init(String[] args)
+    {
+        //MARK 命令行参数传入解密 byte
+        key=args.length>0?args[0]:"1";
+    }
+
 }

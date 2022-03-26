@@ -1,4 +1,4 @@
 rootProject.name = 'plugin'
 include 'plugins'
 include 'pluggable'
-
+include 'groovy'
