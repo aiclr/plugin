@@ -1,4 +1,4 @@
-package org.bougainvilleas.java.plugins;
+package org.bougainvilleas.java;
 
 import java.lang.instrument.Instrumentation;
 import java.util.Objects;
