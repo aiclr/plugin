@@ -1,0 +1,16 @@
+plugins {
+    // Apply the java-library plugin for API and implementation separation.
+    id 'groovy'
+    id 'java-gradle-plugin'
+    id 'maven-publish'
+}
+
+gradlePlugin {
+    plugins {
+        simplePlugin {
+            id = 'org.bougainvilleas.java.encrypt'
+            version = '0.0.1'
+            implementationClass = 'org.bougainvilleas.java.encrypt.JClassEncryptPlugin'
+        }
+    }
+}

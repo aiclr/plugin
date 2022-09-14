@@ -1,6 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
-
+/**
+ * 简单异或加密文件
+ * ./rw.out tmp ./org/bougainvilleas/java/TTClient.class ./org/bougainvilleas/java/TTClient.class
+ * 将 argv[1] 加密为 argv[2]
+ */
 int main(int argc,char *argv[])
 {
 	FILE *IFP=NULL;

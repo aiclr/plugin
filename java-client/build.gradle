@@ -1,0 +1,30 @@
+plugins {
+    // Apply the application plugin to add support for building a CLI application in Java.
+    id 'application'
+    id 'org.bougainvilleas.java.encrypt' version '0.0.1'
+}
+
+application {
+    // Define the main class for the application.
+    mainClass = 'org.bougainvilleas.java.client.Client'
+}
+
+//修改 class 文件输出位置
+compileJava.destinationDir=file("/build/encrypt/classes/java/main")
+
+jar.manifest {
+    attributes('Main-Class':"org.bougainvilleas.java.client.Client")
+}
+
+classEncrypt{
+    packages='org.bougainvilleas.java.client'
+    password='AAABBB'
+}
+
+classes.doLast{
+    //MARK 使用命令行参数 传入加密byte
+    //gradle :java-client:build -Ppassword=aaaccc
+    if(this.getProject().getProperties().containsKey('key'))
+        classEncrypt.password="${password}"
+    encrypt.encryptClass()
+}
