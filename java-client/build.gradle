@@ -10,7 +10,7 @@ application {
 }
 
 //修改 class 文件输出位置
-compileJava.destinationDir=file("/build/encrypt/classes/java/main")
+compileJava.destinationDir=file("build/encrypt/classes/java/main")
 
 jar.manifest {
     attributes('Main-Class':"org.bougainvilleas.java.client.Client")
