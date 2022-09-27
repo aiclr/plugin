@@ -10,6 +10,7 @@ class JClassEncryptPlugin implements Plugin<Project> {
         def extension = project.extensions.create('classEncrypt',JClassEncryptPluginExtension)
 
         project.getTasks().register('encrypt', JClassEncryptTask.class, task -> {
+            skip=extension.skip.get()
             packages = "${extension.packages.get()}"
             password = "${extension.password.get()}"
             task.group='build'
