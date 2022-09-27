@@ -1,6 +1,12 @@
 # encrypt class files gradle plugins
 
-# use
+## publish local maven
+
+1. `publishToMavenLocal`
+2. `publishSimplePluginPluginMarkerMavenPublicationToMavenLocal`
+
+
+## use
 
 > edit root project's `settings.gradle`
 > ```groovy
