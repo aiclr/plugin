@@ -4,6 +4,8 @@ import org.gradle.api.DefaultTask
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.TaskAction
 
+import java.nio.file.Files
+
 class JClassEncryptTask extends DefaultTask {
 
     @Input
@@ -33,15 +35,15 @@ class JClassEncryptTask extends DefaultTask {
                 //自动创建父级
                 output.mkdirs()
                 //不自动创建父级
-                output.mkdir()
+//                output.mkdir()
             }
             File[] files = Optional.ofNullable(file.listFiles()).orElse(new File[0]);
             // 递归 recursion 遍历所有文件
             Arrays.stream(files).forEach(temp -> encryptClass(temp, key));
         } else if (file.isFile() && file.getAbsolutePath().endsWith(".class")) {
             try (
-                    InputStream inputStream = new FileInputStream(file);
-                    OutputStream outputStream = new FileOutputStream(output)
+                    InputStream inputStream = Files.newInputStream(file.toPath());
+                    OutputStream outputStream = Files.newOutputStream(output.toPath())
             ) {
                 //AES 加密
                 byte[] buffer = new byte[16];
